@@ -1,7 +1,6 @@
 #include "LongInt.h"
 
 
-
 LongInt::LongInt()
 {
 	base = defbase;
@@ -41,32 +40,66 @@ LongInt::LongInt(LongInt & numb)
 	}
 }
 
-void LongInt::operator+(LongInt a)
+LongInt LongInt::operator+(LongInt b)
 {
-	
+	int newLen = 0;
+	(length > b.length) ? (newLen = length) : (newLen = b.length);
+	if (arr[0] + b.arr[0] > base) newLen++;
+
+	LongInt res(newLen); res.base = base;
+
+	for (int i = newLen - 1, ia = length - 1, ib = b.length - 1; i >= 0; i--, ia--, ib--) {
+		if (ia >= 0 && ib >= 0)
+			res.arr[i] += arr[ia] + b.arr[ib];
+
+		else if (ia < 0 && ib >= 0)
+			res.arr[i] += b.arr[ib];
+
+		else res.arr[i] += arr[ia];
+
+		int q = i;
+		while (res.arr[q] >= res.base && q) {
+			res.arr[q - 1] += res.arr[q] / res.base;
+			res.arr[q]+= res.arr[q] % res.base;
+			q--;
+		}
+
+	}
+
+	if (res.arr[0] >= res.base) {
+		newLen++;
+		LongInt newres(newLen); newres.base = res.base;
+		for (int i = 0; i < newLen; i++) 
+			newres.arr[i] = res.arr[i - 1];
+		newres.arr[1] = newres.arr[1] % newres.base;
+		newres.arr[0] = newres.arr[1] / newres.base;
+		res = newres;
+	}
+	while (res.arr[0] == 0 && res.length > 1) {
+		res.length--;
+		for (int i = 0; i < res.length; i++) {
+			res.arr[i] = res.arr[i + 1];
+		}
+	}
+	return res;
 }
 
-void LongInt::operator-(LongInt a)
+LongInt LongInt::operator-(LongInt a)
 {
-	
+	return LongInt();
 }
 
 LongInt LongInt::operator*(LongInt a)
 {
-	if (base == a.base) {
-		int len = 0;;
-		(length > a.length) ? len = length : len = a.length;
-		LongInt res(len * 2);
-		for (int i = 0; i < len / 2; ++i) {
-			for (int j = 0; j < len / 2; ++j) {
-				res.arr[i + j] += arr[i] * a.arr[j];
-			}
+	int len = 0;;
+	(length > a.length) ? len = length : len = a.length;
+	LongInt res(len * 2);
+	for (int i = 0; i < len / 2; ++i) {
+		for (int j = 0; j < len / 2; ++j) {
+			res.arr[i + j] += arr[i] * a.arr[j];
 		}
-		return res;
 	}
-	else {
-		cout << "can't mulltiply" << endl;
-	}
+	return res;
 }
 
 LongInt LongInt::Karatzuba(LongInt a, LongInt b)
