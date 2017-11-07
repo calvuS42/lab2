@@ -20,10 +20,14 @@ LongInt::LongInt(int len)
 LongInt::LongInt(string& str, int base)
 {
 	this->base = base;
-	length = str.size();
-	arr = new int[str.size()];
-	for (int i = 0; i < length; i++) {
-		arr[i] = str[i] - '0';
+	length = ceil(str.size() * sizeof(int) / sizeof(base));
+	int base_length = sizeof(base) / sizeof(int) - '\0';
+	arr = new int[length];
+	int* s = new int[length];
+	while (str.size() % base_length != 0) { str = "0" + str; }
+	for (int i = 0 ; i < length; i+= base_length) {
+		string k = str.substr(i, base_length);
+		arr[i] = atoi(k.c_str()) ;
 	}
 }
 
