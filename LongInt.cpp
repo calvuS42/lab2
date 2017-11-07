@@ -41,19 +41,96 @@ LongInt::LongInt(LongInt & numb)
 	}
 }
 
-LongInt LongInt::operator+(LongInt a)
+void LongInt::operator+(LongInt a)
 {
-	return LongInt();
+	
 }
 
-LongInt LongInt::operator-(LongInt a)
+void LongInt::operator-(LongInt a)
 {
-	return LongInt();
+	
 }
 
 LongInt LongInt::operator*(LongInt a)
 {
+	if (base == a.base) {
+		int len = 0;;
+		(length > a.length) ? len = length : len = a.length;
+		LongInt res(len * 2);
+		for (int i = 0; i < len / 2; ++i) {
+			for (int j = 0; j < len / 2; ++j) {
+				res.arr[i + j] += arr[i] * a.arr[j];
+			}
+		}
+		return res;
+	}
+	else {
+		cout << "can't mulltiply" << endl;
+	}
+}
+
+LongInt LongInt::Karatzuba(LongInt a, LongInt b)
+{
+	LongInt res(a.length + b.length);
+	if (a.length < minlen || b.length < minlen) {
+		res = a*b;
+		return res;
+	}
+	else
+	{
+		a.to_same(b);
+		LongInt a0, a1(a), b0, b1(b);
+		a1.length = (a.length + 1) / 2;
+		a0.arr = a.arr + a1.length;
+		a0.length = a.length / 2;
+		b1.length = (b.length + 1) / 2;
+		b0.arr = b.arr + b1.length;
+		b0.length = b.length / 2;
+		int t = a0.length;
+
+
+		LongInt a0_plus_a1(a0 + a1); // need to add or subs, hope will work
+		LongInt b0_plus_b1(b0 + b1);
+		LongInt add_all = Karatzuba(a0_plus_a1, b0_plus_b1);
+		LongInt a0_mul_b0 = Karatzuba(a0, b0);
+		LongInt a1_mul_b1 = Karatzuba(a1, b1);
+		LongInt minus = (add_all - a0_mul_b0) - a1_mul_b1;
+
+		for (int i = 0; i<t; i++) {
+			minus.length++;
+			minus.arr[minus.length - 1] = 0;
+		}
+
+		for (int i = 0; i<2 * t; i++) {
+			a1_mul_b1.length++;
+			a1_mul_b1.arr[a1_mul_b1.length - 1] = 0;
+		}
+
+		res = a0_mul_b0 + minus + a1_mul_b1;
+	}
 	return LongInt();
+}
+
+void LongInt::to_same(LongInt a)
+{
+	if (length == a.length)return;
+	if (length>a.length) {
+		int t = a.length;
+		a.length = length;
+		for (int i = 0; i<t; i++) {
+			a.arr[a.length - 1 - i] = a.arr[t - 1 - i];
+		}
+		for (int i = 0; i<length - t; i++) a.arr[i] = 0;
+	}
+	else
+	{
+		int t = length;
+		length = a.length;
+		for (int i = 0; i<t; i++) {
+			arr[length - 1 - i] = arr[t - 1 - i];
+		}
+		for (int i = 0; i<a.length - t; i++) arr[i] = 0;
+	}
 }
 
 LongInt LongInt::operator/(LongInt a)
