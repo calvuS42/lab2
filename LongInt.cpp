@@ -86,21 +86,9 @@ LongInt LongInt::operator+(LongInt b)
 
 LongInt LongInt::operator-(LongInt b)
 {
-	int newLen = (length >= b.length) ? length : b.length;
-	LongInt res(newLen); res.base = base;
-	if (length == newLen) {
-		LongInt c(newLen); c.base = base;
-		for (int ib = b.length, i = newLen; ib > 0; ib--, i--)
-			c.arr[i] = b.arr[ib];
-		b = c;
-	}
-	else {
-		LongInt c(newLen); c.base = base;
-		for (int ia = length, i = newLen; ia > 0; ia--, i--)
-			c.arr[i] = arr[ia];
-		*this = c;
-	}
-
+	(*this).to_same(b);
+	LongInt res(length); res.base = base;
+	
 	for (int i = length; i >= 0; --i) {
 		res.arr[i] += arr[i] - b.arr[i];
 		if (res.arr[i] < 0) {
@@ -113,10 +101,10 @@ LongInt LongInt::operator-(LongInt b)
 	}
 
 	while (res.arr[0] == 0) {
-		newLen--;
-		LongInt newR(newLen);
-		for (int o = 0; o < newLen; o++)
-			newR.arr[o] = res.arr[o];
+		res.length--;
+		LongInt newR(res.length);
+		for (int o = 0; o < res.length; o++)
+			newR.arr[o] = res.arr[o+1];
 		res = newR;
 	}
 	return res;
