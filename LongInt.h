@@ -16,7 +16,7 @@ class LongInt
 public:
 	LongInt();
 	LongInt(int len);
-	LongInt(string str, int base);
+	LongInt(string& str, int base);
 	LongInt(LongInt&);
 	LongInt operator+ (LongInt a);
 	LongInt operator- (LongInt a);
@@ -24,7 +24,6 @@ public:
 	//LongInt operator/ (LongInt a);
 	LongInt operator= (LongInt a);
 	friend ostream& operator << (ostream& stream, LongInt a);
-	~LongInt();
 protected:
 	int* arr;
 	int length;

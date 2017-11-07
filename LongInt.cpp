@@ -11,23 +11,30 @@ LongInt::LongInt(int len)
 {
 	base = defbase;
 	length = len;
+	arr = new int[len];
 	for (int i = 0; i < length; i++) {
-		arr[i]
+		arr[i] = 0;
 	}
 }
 
-LongInt::LongInt(string str, int base)
+LongInt::LongInt(string& str, int base)
 {
 	this->base = base;
-	length = str.size() / base + 1;
+	length = str.size();
 	arr = new int[str.size()];
 	for (int i = 0; i < length; i++) {
 		arr[i] = str[i] - '0';
 	}
 }
 
-LongInt::LongInt(LongInt &)
+LongInt::LongInt(LongInt & numb)
 {
+	length = numb.length;
+	base = numb.base;
+	arr = new int[length];
+	for (int i = 0; i < length; i++) {
+		arr[i] = numb.arr[i];
+	}
 }
 
 LongInt LongInt::operator+(LongInt a)
@@ -50,19 +57,12 @@ LongInt LongInt::operator=(LongInt a)
 	return LongInt();
 }
 
-LongInt::~LongInt()
-{
-	delete arr;
-}
-
-
-
 
 ostream & operator<<(ostream & stream, LongInt a)
 {
 	string str;
 	for (int i = 0; i < a.length; i++) {
-		str += a.arr[i];
+		str += to_string(a.arr[i]);
 	}
 	stream << str << endl;
 	return stream;
