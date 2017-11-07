@@ -52,9 +52,25 @@ LongInt LongInt::operator*(LongInt a)
 	return LongInt();
 }
 
-LongInt LongInt::operator=(LongInt a)
+LongInt LongInt::operator/(LongInt a)
 {
 	return LongInt();
+}
+
+void LongInt::operator=(LongInt a)
+{
+	base = a.base;
+	length = a.length;
+	arr = new int[length];
+	for (int i = 0; i < length; i++) {
+		arr[i] = a.arr[i];
+	}
+}
+
+void LongInt::operator=(int a)
+{
+	LongInt b(to_string(a), base);
+	*this = b;
 }
 
 

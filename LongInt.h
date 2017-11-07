@@ -21,8 +21,9 @@ public:
 	LongInt operator+ (LongInt a);
 	LongInt operator- (LongInt a);
 	LongInt operator* (LongInt a);
-	//LongInt operator/ (LongInt a);
-	LongInt operator= (LongInt a);
+	LongInt operator/ (LongInt a);
+	void operator= (LongInt a);
+	void operator= (int a);
 	friend ostream& operator << (ostream& stream, LongInt a);
 protected:
 	int* arr;
