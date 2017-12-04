@@ -17,10 +17,11 @@ public:
 	LongInt();
 	LongInt(int len);
 	LongInt(string& str, int base);
-	LongInt(LongInt&);
+	LongInt(LongInt&);	
 	LongInt operator+ (LongInt a);
 	LongInt operator- (LongInt a);
 	LongInt operator* (LongInt a);
+	LongInt operator* (int a);
 	LongInt Karatzuba(LongInt a, LongInt b);
 	void to_same(LongInt a);
 	LongInt operator/ (LongInt a);

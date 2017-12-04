@@ -34,7 +34,7 @@ LongInt::LongInt(LongInt & numb)
 {
 	length = numb.length;
 	base = numb.base;
-	arr = new int[length];
+	arr = new int[numb.length];
 	for (int i = 0; i < length; i++) {
 		arr[i] = numb.arr[i];
 	}
@@ -86,14 +86,17 @@ LongInt LongInt::operator+(LongInt b)
 
 LongInt LongInt::operator-(LongInt b)
 {
-	(*this).to_same(b);
+	return *this + ( b * (-1));
+
+
+/*	(*this).to_same(b);
 	LongInt res(length); res.base = base;
 	
-	for (int i = length; i >= 0; --i) {
-		res.arr[i] += arr[i] - b.arr[i];
-		if (res.arr[i] < 0) {
-			res.arr[i - 1]--;
-			res.arr[i] += base;
+	for (int i = length-1; i >= 0; --i) {
+		res.arr[i] += (arr[i] - b.arr[i]);
+		while (res.arr[i] < 0 && i) {
+			arr[i - 1]--;
+			res.arr[i] += base*(10^i);
 		}
 	}
 	if (res.arr[0] < 0) {
@@ -108,7 +111,7 @@ LongInt LongInt::operator-(LongInt b)
 		res = newR;
 	}
 	return res;
-
+	*/
 }
 
 LongInt LongInt::operator*(LongInt a)
@@ -122,6 +125,13 @@ LongInt LongInt::operator*(LongInt a)
 		}
 	}
 	return res;
+}
+
+LongInt LongInt::operator*(int a)
+{
+	LongInt b(to_string(a), base);
+
+	return (*this) * b;
 }
 
 LongInt LongInt::Karatzuba(LongInt a, LongInt b)
@@ -169,22 +179,22 @@ LongInt LongInt::Karatzuba(LongInt a, LongInt b)
 void LongInt::to_same(LongInt a)
 {
 	if (length == a.length)return;
-	if (length>a.length) {
+	if (length > a.length) {
 		int t = a.length;
 		a.length = length;
-		for (int i = 0; i<t; i++) {
+		for (int i = 0; i < t; i++) {
 			a.arr[a.length - 1 - i] = a.arr[t - 1 - i];
 		}
-		for (int i = 0; i<length - t; i++) a.arr[i] = 0;
+		for (int i = 0; i < length - t; i++) a.arr[i] = 0;
 	}
 	else
 	{
 		int t = length;
 		length = a.length;
-		for (int i = 0; i<t; i++) {
+		for (int i = 0; i < t; i++) {
 			arr[length - 1 - i] = arr[t - 1 - i];
 		}
-		for (int i = 0; i<a.length - t; i++) arr[i] = 0;
+		for (int i = 0; i < length - t; i++) arr[i] = 0;
 	}
 }
 
